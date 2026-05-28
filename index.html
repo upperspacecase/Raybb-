@@ -168,11 +168,10 @@
       <div class="dispatch" id="dispatch">
         <div class="telegram">
           <div class="tg-top">
-            <span class="tg-no" id="dispNo">DISPATCH No. 0628</span>
+            <span class="tg-no" id="dispNo">DISPATCH No. 0001</span>
             <span class="stamp">Rendezvous</span>
           </div>
           <div class="body" id="dispBody"></div>
-          <p class="note" id="dispNote"></p>
           <div class="ed">Time remaining until the meeting</div>
 
           <div class="clock" id="clock">
@@ -220,7 +219,6 @@
       sealCap=document.getElementById('sealCap'),
       dispatch=document.getElementById('dispatch'),
       dispBody=document.getElementById('dispBody'),
-      dispNote=document.getElementById('dispNote'),
       clock=document.getElementById('clock'),
       burn=document.getElementById('burn'),
       elD=document.getElementById('d'),
@@ -231,24 +229,6 @@
       arrived=document.getElementById('arrived');
 
   var DISPATCH_TEXT = "Ty and Ray are summoned to meet at last — the 28th of June, half past six in the evening, in the city of New York.";
-
-  // slow-burn marginalia — the closer we get, the warmer the whisper
-  var FAR = [
-    "The post is slow. The waiting is the courtship.",
-    "Two coordinates drifting, by appointment, toward one.",
-    "Somewhere a table is already being set."
-  ];
-  var NEAR = [
-    "Close now. You can almost hear the other footsteps.",
-    "The map has nearly folded down to a single point.",
-    "Tonight the city keeps its promise.",
-    "Mind the hour. It will not knock twice."
-  ];
-  var SOON = [
-    "Almost. Stand somewhere you can be found.",
-    "The wax is softening. Any moment now.",
-    "Hold still — the meeting is upon you."
-  ];
 
   var typeTimer=null;
   function typeText(txt, done){
@@ -263,15 +243,7 @@
   }
 
   function pad(n){ return (n<10?'0':'')+n; }
-  var lastSec=-1, lastBand='';
-
-  function pickNote(totalSec){
-    var pool;
-    if(totalSec > 60*60*24*2){ pool=FAR; }
-    else if(totalSec > 60*60*3){ pool=NEAR; }
-    else { pool=SOON; }
-    return pool[ Math.floor(Date.now()/12000) % pool.length ];
-  }
+  var lastSec=-1;
 
   function tick(){
     var now=Date.now(), diff=TARGET-now;
@@ -302,13 +274,6 @@
     var span=TARGET-ORIGIN, doneAmt=now-ORIGIN;
     var pct=Math.max(0,Math.min(100,(doneAmt/span)*100));
     burnFill.style.width=pct.toFixed(3)+'%';
-
-    var n=pickNote(totalSec);
-    if(n!==dispNote.textContent){
-      dispNote.style.transition='opacity .6s ease';
-      dispNote.style.opacity='0';
-      setTimeout(function(){ dispNote.textContent=n; dispNote.style.opacity='1'; },400);
-    }
   }
 
   function reveal(){
