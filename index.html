@@ -12,13 +12,13 @@
     --paper:#ece1c6;
     --paper-deep:#ddcfa9;
     --card:#f4ecd8;
-    --ink:#2f3b4c;
+    --ink:#2f3b4c;          /* faded dispatch ink */
     --ink-soft:#5a6273;
-    --red:#b3402b;
+    --red:#b3402b;          /* postal vermilion */
     --red-deep:#8f3221;
     --ochre:#c0922f;
     --ochre-deep:#9b7322;
-    --green:#566b4d;
+    --green:#566b4d;        /* telegram green */
     --line:rgba(47,59,76,.32);
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -50,53 +50,71 @@
   /* letterhead */
   .head{text-align:center;}
   .monogram{margin:0 auto 8px;display:block;}
-  h1{font-family:'Marcellus SC',serif;font-size:24px;line-height:1.08;letter-spacing:1px;color:var(--ink);}
+  h1{font-family:'Marcellus SC',serif;font-size:26px;line-height:1.05;letter-spacing:1px;color:var(--ink);}
   .rule{display:flex;align-items:center;justify-content:center;gap:9px;margin:9px auto 8px;width:80%;}
   .rule::before,.rule::after{content:"";height:1px;flex:1;background:var(--line);}
   .rule .d{width:5px;height:5px;background:var(--red);transform:rotate(45deg);}
   .tag{font-family:'Jost';font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink-soft);font-weight:500;}
   .est{font-family:'Jost';font-size:8.5px;letter-spacing:2.6px;text-transform:uppercase;color:var(--green);margin-top:4px;}
 
+  /* sealed stage */
+  .stage{margin-top:22px;min-height:296px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .sealed{display:flex;flex-direction:column;align-items:center;gap:18px;transition:opacity .45s ease, transform .45s ease;}
+  .sealed.gone{opacity:0;transform:scale(.9);pointer-events:none;position:absolute;}
+  .seal-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .wax{
+    width:104px;height:104px;border-radius:50%;position:relative;
+    background:radial-gradient(circle at 38% 32%,#cf5a44 0%,var(--red) 45%,var(--red-deep) 100%);
+    box-shadow:inset 0 -8px 18px rgba(90,20,10,.5),inset 0 6px 14px rgba(255,180,160,.4),0 8px 20px -6px rgba(120,40,25,.55);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .5s ease,filter .5s ease;
+  }
+  .wax::before{content:"";position:absolute;inset:7px;border-radius:50%;border:1.5px dashed rgba(255,230,220,.55);}
+  .wax span{font-family:'Marcellus SC',serif;font-size:23px;color:#f6e7df;letter-spacing:1px;text-shadow:0 1px 1px rgba(90,20,10,.6);}
+  .seal-btn:active .wax{transform:scale(.94);}
+  .wax.broken{transform:scale(1.7) rotate(14deg);opacity:0;filter:blur(3px);}
+  .seal-cap{font-family:'Jost';font-size:10px;letter-spacing:2.4px;text-transform:uppercase;color:var(--ink-soft);max-width:230px;text-align:center;line-height:1.7;}
+
   /* dispatch card */
+  .dispatch{width:100%;opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;pointer-events:none;position:absolute;}
+  .dispatch.show{opacity:1;transform:none;pointer-events:auto;position:static;}
   .telegram{
-    margin-top:22px;
-    background:#f7f1e1;border:1px solid var(--ink);border-radius:2px;padding:20px 18px 18px;position:relative;
+    background:#f7f1e1;border:1px solid var(--ink);border-radius:2px;padding:18px 17px 16px;position:relative;
     box-shadow:0 6px 18px -10px rgba(40,30,20,.5);
     background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(47,59,76,.07) 27px,rgba(47,59,76,.07) 28px);
   }
-  .tg-top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:7px;margin-bottom:14px;}
+  .tg-top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:7px;margin-bottom:12px;}
   .tg-no{font-family:'Special Elite';font-size:12px;letter-spacing:1px;color:var(--ink-soft);}
   .stamp{
     font-family:'Jost';font-weight:600;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;
     border:1.5px solid var(--red);color:var(--red);padding:4px 9px;border-radius:2px;transform:rotate(-3deg);
     align-self:flex-start;
   }
-
-  .parties{font-family:'Marcellus SC',serif;font-size:22px;letter-spacing:1.5px;text-align:center;color:var(--ink);line-height:1.25;}
-  .parties .amp{color:var(--red);font-family:'Marcellus';font-style:italic;font-size:20px;margin:0 4px;}
-  .occasion{font-family:'Special Elite';font-size:12.5px;line-height:1.6;color:var(--ink-soft);text-align:center;margin-top:10px;}
-  .occasion b{color:var(--ink);font-weight:normal;border-bottom:1px solid var(--line);}
-
-  .ed{display:flex;align-items:center;gap:7px;margin:18px 0 16px;font-family:'Jost';font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);}
+  .body{font-family:'Special Elite';font-size:16.5px;line-height:1.72;color:var(--ink);min-height:84px;}
+  .cursor{display:inline-block;width:8px;margin-left:1px;border-bottom:2px solid var(--ink);animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .note{font-family:'Marcellus';font-style:italic;font-size:14px;color:var(--red-deep);margin-top:12px;letter-spacing:.3px;}
+  .ed{display:flex;align-items:center;gap:7px;margin-top:14px;font-family:'Jost';font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);}
   .ed::before,.ed::after{content:"";flex:1;height:1px;background:var(--line);}
 
-  /* countdown — the slow burn */
-  .clock{display:flex;justify-content:center;gap:8px;}
-  .unit{flex:1;max-width:84px;display:flex;flex-direction:column;align-items:center;}
+  /* the countdown — a slow burn, kept inside the dispatch */
+  .clock{display:flex;justify-content:center;gap:7px;margin-top:16px;opacity:0;transition:opacity .8s ease;}
+  .clock.lit{opacity:1;}
+  .unit{flex:1;max-width:82px;display:flex;flex-direction:column;align-items:center;}
   .num{
-    font-family:'Special Elite';font-size:30px;line-height:1;color:var(--ink);
+    font-family:'Special Elite';font-size:28px;line-height:1;color:var(--ink);
     background:linear-gradient(180deg,#fbf6e9 0%, #efe6cf 100%);
     border:1px solid var(--ink);border-radius:3px;
-    width:100%;padding:13px 0 11px;text-align:center;position:relative;
+    width:100%;padding:12px 0 10px;text-align:center;position:relative;
     box-shadow:inset 0 -6px 10px rgba(47,59,76,.06),0 3px 0 -1px var(--line);
     transition:color .9s ease;
   }
-  /* the hairline 'fold' across each digit plate, like an old split-flap */
   .num::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line);opacity:.5;}
   .num.tick{color:var(--red);}
-  .lab{font-family:'Jost';font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);margin-top:8px;}
+  .lab{font-family:'Jost';font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);margin-top:7px;}
 
-  .burn{margin-top:18px;}
+  .burn{margin-top:16px;opacity:0;transition:opacity .8s ease;}
+  .burn.lit{opacity:1;}
   .burn-rail{height:5px;background:rgba(47,59,76,.14);border:1px solid var(--line);border-radius:3px;overflow:hidden;position:relative;}
   .burn-fill{position:absolute;inset:0;width:0%;
     background:linear-gradient(90deg,var(--ochre) 0%,var(--red) 70%,var(--red-deep) 100%);
@@ -105,18 +123,16 @@
   .burn-cap{display:flex;justify-content:space-between;margin-top:7px;
     font-family:'Jost';font-size:8px;letter-spacing:1.8px;text-transform:uppercase;color:var(--ink-soft);}
 
-  .note{font-family:'Marcellus';font-style:italic;font-size:14px;color:var(--red-deep);text-align:center;margin-top:18px;letter-spacing:.3px;line-height:1.5;min-height:21px;transition:opacity .8s ease;}
-
-  /* the arrival state */
-  .arrived{text-align:center;display:none;}
-  .arrived.show{display:block;}
+  /* arrival */
+  .arrived{text-align:center;opacity:0;transition:opacity .5s ease;position:absolute;pointer-events:none;width:100%;}
+  .arrived.show{opacity:1;position:static;pointer-events:auto;}
   .acc-stamp{display:inline-block;font-family:'Marcellus SC',serif;font-size:17px;letter-spacing:2px;color:var(--green);
     border:2px solid var(--green);border-radius:3px;padding:9px 16px;transform:rotate(-4deg);}
-  .acc-sub{font-family:'Special Elite';font-size:13px;color:var(--ink-soft);margin-top:16px;line-height:1.7;}
+  .acc-sub{font-family:'Special Elite';font-size:12px;color:var(--ink-soft);margin-top:14px;line-height:1.6;}
 
   /* footer */
   .foot{margin-top:18px;border-top:1px solid var(--line);padding-top:12px;display:flex;justify-content:space-between;align-items:center;}
-  .place{font-family:'Jost';font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);font-weight:500;}
+  .record-btn{background:none;border:none;cursor:pointer;font-family:'Jost';font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-soft);font-weight:500;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line);}
   .creed{font-family:'Marcellus';font-style:italic;font-size:11px;color:var(--ink-soft);}
 </style>
 </head>
@@ -139,43 +155,49 @@
       <p class="est">Department of Slow Burns · Est. MMXXXVI</p>
     </div>
 
-    <div class="telegram">
-      <div class="tg-top">
-        <span class="tg-no" id="dispNo">DISPATCH No. 0628</span>
-        <span class="stamp">Rendezvous</span>
+    <div class="stage">
+      <!-- sealed -->
+      <div class="sealed" id="sealed">
+        <button class="seal-btn" id="sealBtn" aria-label="Break the seal">
+          <div class="wax" id="wax"><span>U</span></div>
+        </button>
+        <p class="seal-cap" id="sealCap">Break the seal to read<br>the appointment foretold</p>
       </div>
 
-      <!-- counting -->
-      <div id="counting">
-        <p class="parties">Ty <span class="amp">&amp;</span> Ray</p>
-        <p class="occasion">are summoned to meet at last on<br><b>28 June, half past six in the evening</b><br>in the city of <b>New York</b></p>
+      <!-- dispatch -->
+      <div class="dispatch" id="dispatch">
+        <div class="telegram">
+          <div class="tg-top">
+            <span class="tg-no" id="dispNo">DISPATCH No. 0628</span>
+            <span class="stamp">Rendezvous</span>
+          </div>
+          <div class="body" id="dispBody"></div>
+          <p class="note" id="dispNote"></p>
+          <div class="ed">Time remaining until the meeting</div>
 
-        <div class="ed">Time remaining until the meeting</div>
+          <div class="clock" id="clock">
+            <div class="unit"><div class="num" id="d">--</div><div class="lab">Days</div></div>
+            <div class="unit"><div class="num" id="h">--</div><div class="lab">Hours</div></div>
+            <div class="unit"><div class="num" id="m">--</div><div class="lab">Minutes</div></div>
+            <div class="unit"><div class="num" id="s">--</div><div class="lab">Seconds</div></div>
+          </div>
 
-        <div class="clock">
-          <div class="unit"><div class="num" id="d">--</div><div class="lab">Days</div></div>
-          <div class="unit"><div class="num" id="h">--</div><div class="lab">Hours</div></div>
-          <div class="unit"><div class="num" id="m">--</div><div class="lab">Minutes</div></div>
-          <div class="unit"><div class="num" id="s">--</div><div class="lab">Seconds</div></div>
+          <div class="burn" id="burn">
+            <div class="burn-rail"><div class="burn-fill" id="burnFill"></div></div>
+            <div class="burn-cap"><span>The seal was broken</span><span>The hour itself</span></div>
+          </div>
         </div>
-
-        <div class="burn">
-          <div class="burn-rail"><div class="burn-fill" id="burnFill"></div></div>
-          <div class="burn-cap"><span id="burnFrom">The dispatch was sealed</span><span>The hour itself</span></div>
-        </div>
-
-        <p class="note" id="note"></p>
       </div>
 
       <!-- arrived -->
       <div class="arrived" id="arrived">
         <span class="acc-stamp">The Hour Has Come</span>
-        <p class="acc-sub">Ty and Ray are to meet now.<br>New York City · half past six.<br><span style="color:var(--red-deep)">Put down the screen. Go.</span></p>
+        <p class="acc-sub">Ty and Ray are to meet now.<br>New York City · half past six.<br>Put down the screen. Go.</p>
       </div>
     </div>
 
     <div class="foot">
-      <span class="place">New York City · 18:30</span>
+      <button class="record-btn" id="openRec">New York City · 28 June · 18:30</button>
       <span class="creed">Some things are worth the wait.</span>
     </div>
   </div>
@@ -187,19 +209,28 @@
 
   // The appointed hour: 28 June 2026, 18:30 in New York (EDT, UTC-4) => 22:30 UTC.
   var TARGET = Date.UTC(2026, 5, 28, 22, 30, 0);
-  // When the burn began — the moment this dispatch was sealed. We measure the
-  // slow burn from a fixed origin so the fuse fills steadily toward the hour.
-  var ORIGIN = Date.UTC(2026, 4, 28, 22, 30, 0); // one month prior
+  // The slow burn is measured from a fixed origin one month prior, so the fuse
+  // fills steadily toward the hour no matter when the seal is broken.
+  var ORIGIN = Date.UTC(2026, 4, 28, 22, 30, 0);
 
-  var elD=document.getElementById('d'),
+  // ---------- elements ----------
+  var sealed=document.getElementById('sealed'),
+      sealBtn=document.getElementById('sealBtn'),
+      wax=document.getElementById('wax'),
+      sealCap=document.getElementById('sealCap'),
+      dispatch=document.getElementById('dispatch'),
+      dispBody=document.getElementById('dispBody'),
+      dispNote=document.getElementById('dispNote'),
+      clock=document.getElementById('clock'),
+      burn=document.getElementById('burn'),
+      elD=document.getElementById('d'),
       elH=document.getElementById('h'),
       elM=document.getElementById('m'),
       elS=document.getElementById('s'),
       burnFill=document.getElementById('burnFill'),
-      burnFrom=document.getElementById('burnFrom'),
-      note=document.getElementById('note'),
-      counting=document.getElementById('counting'),
       arrived=document.getElementById('arrived');
+
+  var DISPATCH_TEXT = "Ty and Ray are summoned to meet at last — the 28th of June, half past six in the evening, in the city of New York.";
 
   // slow-burn marginalia — the closer we get, the warmer the whisper
   var FAR = [
@@ -220,63 +251,86 @@
     "Hold still — the meeting is upon you."
   ];
 
-  function pad(n){ return (n<10?'0':'')+n; }
+  var typeTimer=null;
+  function typeText(txt, done){
+    clearInterval(typeTimer);
+    dispBody.innerHTML='<span class="cursor"></span>';
+    var i=0;
+    typeTimer=setInterval(function(){
+      i++;
+      dispBody.innerHTML = txt.slice(0,i).replace(/\n/g,'<br>') + '<span class="cursor"></span>';
+      if(i>=txt.length){ clearInterval(typeTimer); dispBody.innerHTML=txt; if(done)done(); }
+    }, 28);
+  }
 
-  var lastSec = -1, noteIdx = -1, lastBand = '';
+  function pad(n){ return (n<10?'0':'')+n; }
+  var lastSec=-1, lastBand='';
 
   function pickNote(totalSec){
-    var pool, band;
-    if(totalSec > 60*60*24*2){ pool=FAR; band='far'; }      // > 2 days
-    else if(totalSec > 60*60*3){ pool=NEAR; band='near'; }   // > 3 hours
-    else { pool=SOON; band='soon'; }
-    if(band!==lastBand){ lastBand=band; noteIdx=0; }
-    return pool[ Math.floor((Date.now()/12000)) % pool.length ];
+    var pool;
+    if(totalSec > 60*60*24*2){ pool=FAR; }
+    else if(totalSec > 60*60*3){ pool=NEAR; }
+    else { pool=SOON; }
+    return pool[ Math.floor(Date.now()/12000) % pool.length ];
   }
 
   function tick(){
-    var now = Date.now();
-    var diff = TARGET - now;
+    var now=Date.now(), diff=TARGET-now;
 
-    if(diff <= 0){
-      counting.style.display='none';
+    if(diff<=0){
+      dispatch.classList.remove('show');
       arrived.classList.add('show');
       return;
     }
 
-    var totalSec = Math.floor(diff/1000);
-    var days = Math.floor(totalSec/86400);
-    var hours = Math.floor((totalSec%86400)/3600);
-    var mins = Math.floor((totalSec%3600)/60);
-    var secs = totalSec%60;
+    var totalSec=Math.floor(diff/1000);
+    var days=Math.floor(totalSec/86400);
+    var hours=Math.floor((totalSec%86400)/3600);
+    var mins=Math.floor((totalSec%3600)/60);
+    var secs=totalSec%60;
 
-    elD.textContent = pad(days);
-    elH.textContent = pad(hours);
-    elM.textContent = pad(mins);
+    elD.textContent=pad(days);
+    elH.textContent=pad(hours);
+    elM.textContent=pad(mins);
 
-    // the slow, deliberate seconds — a brief warm pulse on each turn
-    if(secs !== lastSec){
-      elS.textContent = pad(secs);
+    if(secs!==lastSec){
+      elS.textContent=pad(secs);
       elS.classList.add('tick');
-      setTimeout(function(){ elS.classList.remove('tick'); }, 600);
-      lastSec = secs;
+      setTimeout(function(){ elS.classList.remove('tick'); },600);
+      lastSec=secs;
     }
 
-    // the burning fuse: progress from ORIGIN toward TARGET
-    var span = TARGET - ORIGIN;
-    var done = now - ORIGIN;
-    var pct = Math.max(0, Math.min(100, (done/span)*100));
-    burnFill.style.width = pct.toFixed(3)+'%';
+    var span=TARGET-ORIGIN, doneAmt=now-ORIGIN;
+    var pct=Math.max(0,Math.min(100,(doneAmt/span)*100));
+    burnFill.style.width=pct.toFixed(3)+'%';
 
-    // whisper, changed gently
-    var n = pickNote(totalSec);
-    if(n !== note.textContent){
-      note.style.opacity='0';
-      setTimeout(function(){ note.textContent=n; note.style.opacity='1'; }, 400);
+    var n=pickNote(totalSec);
+    if(n!==dispNote.textContent){
+      dispNote.style.transition='opacity .6s ease';
+      dispNote.style.opacity='0';
+      setTimeout(function(){ dispNote.textContent=n; dispNote.style.opacity='1'; },400);
     }
   }
 
-  tick();
-  setInterval(tick, 1000);
+  function reveal(){
+    wax.classList.add('broken');
+    sealCap.style.opacity='0';
+    setTimeout(function(){
+      sealed.classList.add('gone');
+      dispatch.classList.add('show');
+      // type the announcement, then light the slow-burning clock
+      typeText(DISPATCH_TEXT, function(){
+        setTimeout(function(){
+          clock.classList.add('lit');
+          burn.classList.add('lit');
+          tick();
+          setInterval(tick, 1000);
+        }, 500);
+      });
+    }, 480);
+  }
+
+  sealBtn.addEventListener('click', reveal);
 })();
 </script>
 </body>
